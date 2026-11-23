@@ -1,6 +1,6 @@
 # The Panthalassic Projection
 
-![Demo animation](./assets/demo.webp)
+![Demo animation](./assets/panthalassic_year.webp)
 
 An oceancentric world map that shows all the world's oceans in a single continous expanse while minimizing the relative distortion of every major current. This builds upon the [Spilhaus Projection](https://en.wikipedia.org/wiki/Athelstan_Spilhaus#Spilhaus_World_Ocean_Map_Projection) but with the goal to be a faithful representational of the scale of the major currents of the ocean gyres.
 
@@ -111,6 +111,6 @@ The projection itself does not depend on any of this. Real current and temperatu
 
 ## Name and acknowledgements
 
-The authors proposed the name, prompted by their love of Melville's *Moby-Dick*. It is also literal: Panthalassa, from the Greek for "all sea", was the single world ocean that surrounded Pangaea, and today's Pacific is its direct descendant ([Wikipedia, Panthalassa](https://en.wikipedia.org/wiki/Panthalassa)). A map that shows today's oceans as one body of water borrows the word across 225 million years, and across the line between paleoceanography and physical oceanography.
+The idea owes most of its inspiration to Athelstan Spilhaus's world ocean maps, which first put the oceans, not the continents, at the center. It also builds on Charles Sanders Peirce's quincuncial projection, used here as the starting point, and on Jarke van Wijk's myriahedral projections, which showed that maps cut through land can keep oceans whole ([van Wijk, 2008](https://www.win.tue.nl/~vanwijk/myriahedral)). The optimizer follows Rabinovich, Poranne, Panozzo and Sorkine-Hornung, *Scalable Locally Injective Mappings* (ACM Transactions on Graphics, 2017).
 
-The idea owes most to Athelstan Spilhaus's world ocean maps, which first put the oceans, not the continents, at the center. It also builds on Charles Sanders Peirce's quincuncial projection, used here as the starting point, and on Jarke van Wijk's myriahedral projections, which showed that maps cut through land can keep oceans whole ([van Wijk, 2008](https://www.win.tue.nl/~vanwijk/myriahedral)). The optimizer follows Rabinovich, Poranne, Panozzo and Sorkine-Hornung, *Scalable Locally Injective Mappings* (ACM Transactions on Graphics, 2017).
+The work was done in collaboration between Sarah Kemp, Ben Lucas and Claude Opus 5.5. The name Panthalassa comes from the Greek for "all sea", and is named as an homage to Melville's *Moby-Dick*. It is also literal: Panthalassa, was the single world ocean that surrounded Pangaea, and today's Pacific is its direct descendant ([Wikipedia, Panthalassa](https://en.wikipedia.org/wiki/Panthalassa)). A map that shows today's oceans as one body of water borrows the word across 225 million years, and across the line between paleoceanography and physical oceanography.
