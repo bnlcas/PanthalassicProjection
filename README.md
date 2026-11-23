@@ -1,28 +1,30 @@
 # The Panthalassic Projection
 
+An oceancentric projection of the globe that shows all the world's oceans in a single continous expanse while minimizing the relative distortion of the major currents. This builds upon the [Spilhaus Projection](https://en.wikipedia.org/wiki/Athelstan_Spilhaus#Spilhaus_World_Ocean_Map_Projection) but with the goal to faithfully represent the scale of the major currents of the ocean gyres.
+
 ![Demo animation](./assets/panthalassic_year.webp)
 
-An oceancentric world map that shows all the world's oceans in a single continous expanse while minimizing the relative distortion of every major current. This builds upon the [Spilhaus Projection](https://en.wikipedia.org/wiki/Athelstan_Spilhaus#Spilhaus_World_Ocean_Map_Projection) but with the goal to be a faithful representational of the scale of the major currents of the ocean gyres.
 
 ## Summary
 
-The Panthalassic projection draws the whole world ocean as one connected, crease-free surface, with every major current close to its true size and shape. It has no closed formula. It is computed: a triangle mesh of the globe is cut through the continents, then flattened by numerical optimization that weights the currents oceanographers compare most.
+The Panthalassic Projection draws the whole world ocean as one connected, crease-free surface, with every major current close to its true size and shape. It has no closed form formula. It is computed from a triangle mesh. The globe is cut through the continents, then flattened by a numerical optimization that weights the currents oceanographers compare most.
 
 Across all water, 80% of the ocean is drawn within 8% of its true size, and the median shape error is 5°. The Gulf Stream, Kuroshio, Benguela, the equatorial currents and the Antarctic Circumpolar Current all land between 0.92 and 1.08 of true size, with at most 9° of shape error.
 
 The price is paid on land. Eurasia, Africa and the Americas are cut away and appear only as coastlines, and Antarctica, Australia and the large islands are free to shrink or swell.
 
-&#91;image: The Panthalassic projection with a 10-degree graticule and the equator in gold\]
+The Panthalassic Projection with a 10-degree graticule and the equator in gold is shown below:
+![Projection Grid](./assets/panthalassic_preview.png)
 
-The whole world ocean on the Panthalassic projection, with a 10° graticule. Antarctica sits near the center inside the Circumpolar ring. The Atlantic and Arctic run up as one lobe, the Pacific fills the lower left and the Indian Ocean the lower right. Parallels bend into smooth arcs, and nowhere at sea do they kink.
+The whole world ocean on the Panthalassic projection, with a 10° graticule. Antarctica sits near the center inside the Circumpolar current. The Atlantic and Arctic run up as one lobe, the Pacific fills the lower left and the Indian Ocean the lower right. Parallels bend into smooth arcs, and nowhere at sea do they kink.
 
-## Why another ocean map
+## Why another projection?
 
 Conformal ocean maps get the shape of the world ocean right but draw its currents at very different sizes. Spilhaus built his World Ocean Map on Adams' World in a Square II, which is conformal except at the four corners of the square, and whose areas are hugely exaggerated toward the poles and along the antimeridian ([Esri, Adams square II](https://desktop.arcgis.com/en/arcmap/latest/map/projections/adams-square-ii.htm)). A boundary current drawn on such a map cannot be compared at a glance with one in another basin.
 
-We hit the same wall with the Peirce quincuncial projection. Even with its four singular points moved onto land, the fourth must sit in the central Pacific. The equatorial Pacific is then drawn about 1.6 times too large, rising without limit at the singular point, and the equator bends 90° there.
+We hit the same wall with the Peirce quincuncial projection. Even with three of four singular points moved onto land, the fourth must sit in the central Pacific and the equatorial Pacific is then drawn about 1.6 times too large, rising without limit at the singular point. Also the equator bends 90° there.
 
-The Panthalassic projection drops conformality and equal area as hard rules and optimizes directly for what an oceanographer compares:
+The Panthalassic Projection drops conformality and equal area as hard rules and optimizes directly for what an oceanographer compares:
 
 - one connected world ocean, cut only through land (plus the narrow Bering Strait)
 - no creases or singular points anywhere at sea, so flow reads continuously
@@ -52,7 +54,6 @@ E(u) = \sum_f w_f A_f \left( \sigma_{1}^{2} + \sigma_{1}^{-2} + \sigma_{2}^{2} +
 
 On the Panthalassic map, ten reference currents fall between 0.92 and 1.08 of true size, with at most 9° of shape error. The Peirce quincuncial keeps shapes perfect but spreads sizes from 0.88 to 1.59. An ocean-lobed Mollweide keeps area exact but bends shapes by up to 35° and must split the Circumpolar Current.
 
-&#91;embedded content: Computed with the projection script and a Tissot-indicatrix check, averaged over a 2° patch at each current · Peirce with its singular points on land\]
 
 Across all water between 80°S and 80°N, 80% of the ocean is drawn within 0.92 to 1.08 of true linear scale, and the median shape error is 5°. The optimized energy sits within 2% of its theoretical lower bound. Tuning cut the Agulhas from 1.16 to 1.06 of true size; the East Australian Current, at 0.92, is now the smallest.
 
@@ -67,7 +68,7 @@ Across all water between 80°S and 80°N, 80% of the ocean is drawn within 0.92 
 
 ## Reproducing it
 
-One Python file, `panthalassic.py`, rebuilds the projection from a land mask and reproduces the numbers above. It needs numpy and scipy, plus Pillow for PNG masks and matplotlib for GeoJSON input and previews. Every choice in the Method section lives in its `PARAMS` table.
+The python script `./panthalassic.py`, rebuilds the projection from a land mask and reproduces the numbers above. It needs numpy and scipy, plus Pillow for PNG masks and matplotlib for GeoJSON input and previews. The variables discussed in the Method section can be adjusted with the `PARAMS` table.
 
 ```bash
 python panthalassic.py build   --land land_mask_0p25deg.png --out panthalassic.npz   # about 16 minutes
@@ -92,14 +93,14 @@ Files that accompany this note:
 | panthalassic.py | The full method: mask, mesh, cuts, weights, optimizer, forward and inverse maps |
 | panthalassic.npz | The computed projection: 33,154 vertices on the sphere and in the plane (1.1 MB) |
 | land\_mask\_0p25deg.png | The 0.25° land mask used here, traced from a Wikimedia Commons Peirce map |
-| panthalassic\_preview.png | The map with a 10° graticule |
-| panthalassic\_year.mp4 | The 30-second one-year loop |
+| ./assets/panthalassic\_preview.png | The map with a 10° graticule |
+| ./assets/panthalassic\_year.mp4 | The 30-second one-year loop |
 
 For publication, rebuild from Natural Earth's public-domain land polygons by passing `ne_50m_land.geojson` to `--land`. That route was written for this purpose but could not be tested here, because this workspace has no network access. The PNG route produced every result in this note.
 
 ## The visualization
 
-The projection is shown in action on a live map, [All Seas Lead South](https://claude.ai/artifact/35HJCXJHAaivLGRunttX6H), and in a 30-second, one-year loop video (panthalassic\_year.mp4, 1080 × 1350, 30 frames per second). Particles trace the surface currents. Each particle is colored by sea surface temperature and drawn brighter where the current runs faster. The live map adds the Peirce quincuncial and a globe for comparison, and a 10° graticule that shows how each layout bends the Earth.
+The projection is shown in action on a live map, [here](https://claude.ai/artifact/35HJCXJHAaivLGRunttX6H), and in a 30-second, one-year loop video (`./assets/panthalassic\_year.mp4`, 1080 × 1350, 30 frames per second). Particles trace the surface currents. Each particle is colored by sea surface temperature and drawn brighter where the current runs faster. The live map adds the Peirce quincuncial and a globe for comparison, and a 10° graticule that shows how each layout bends the Earth.
 
 The ocean in these animations is modeled, not observed. It was built without access to satellite products such as NASA OSCAR currents or NOAA OISST temperatures:
 
@@ -113,4 +114,4 @@ The projection itself does not depend on any of this. Real current and temperatu
 
 The idea owes most of its inspiration to Athelstan Spilhaus's world ocean maps, which first put the oceans, not the continents, at the center. It also builds on Charles Sanders Peirce's quincuncial projection, used here as the starting point, and on Jarke van Wijk's myriahedral projections, which showed that maps cut through land can keep oceans whole ([van Wijk, 2008](https://www.win.tue.nl/~vanwijk/myriahedral)). The optimizer follows Rabinovich, Poranne, Panozzo and Sorkine-Hornung, *Scalable Locally Injective Mappings* (ACM Transactions on Graphics, 2017).
 
-The work was done in collaboration between Sarah Kemp, Ben Lucas and Claude Opus 5.5. The name Panthalassa comes from the Greek for "all sea", and is named as an homage to Melville's *Moby-Dick*. It is also literal: Panthalassa, was the single world ocean that surrounded Pangaea, and today's Pacific is its direct descendant ([Wikipedia, Panthalassa](https://en.wikipedia.org/wiki/Panthalassa)). A map that shows today's oceans as one body of water borrows the word across 225 million years, and across the line between paleoceanography and physical oceanography.
+The work was done in collaboration between Sarah Kemp, Ben Lucas and Claude Opus 5.5. The name Panthalassa comes from the Greek for "all seas", and is named as an homage to Melville's *Moby-Dick*. It is also literal: Panthalassa, was the single world ocean that surrounded Pangaea, and today's Pacific is its direct descendant ([Wikipedia, Panthalassa](https://en.wikipedia.org/wiki/Panthalassa)). A map that shows today's oceans as one body of water borrows the word across 225 million years, and across the line between paleoceanography and physical oceanography.
